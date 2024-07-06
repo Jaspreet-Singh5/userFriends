@@ -23,7 +23,7 @@ const UserForm = ({ user, onSave }) => {
     const userData = { username, email };
 
     if (user) {
-      axios.put(`http://192.168.1.3/api/users/${user.id}/`, userData)
+      axios.put(`http://localhost/api/users/${user.id}/`, userData)
         .then(response => {
           onSave();
         })
@@ -33,7 +33,7 @@ const UserForm = ({ user, onSave }) => {
           setSnackbarOpen(true);
         });
     } else {
-      axios.post('http://192.168.1.3/api/users/', userData)
+      axios.post('http://localhost/api/users/', userData)
         .then(response => {
           onSave();
         })

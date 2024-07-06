@@ -18,7 +18,7 @@ const App = () => {
 
   const fetchUsers = () => {
     setLoading(true);
-    axios.get('http://192.168.1.3/api/users/')
+    axios.get('http://localhost/api/users/')
       .then(response => {
         setUsers(response.data);
       })
@@ -39,7 +39,7 @@ const App = () => {
 
   const handleDelete = (userId) => {
     setLoading(true);
-    axios.delete(`http://192.168.1.3/api/users/${userId}/`)
+    axios.delete(`http://localhost/api/users/${userId}/`)
       .then(response => {
         fetchUsers();
         setSnackbarMessage('User deleted successfully');
