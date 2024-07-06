@@ -22,7 +22,7 @@ const UserForm = ({ user, onSave }) => {
     const userData = { username, email };
 
     if (user) {
-      axios.put(`http://192.168.1.3:8000/api/users/${user.id}/`, userData)
+      axios.put(`http://192.168.1.3/api/users/${user.id}/`, userData)
         .then(response => {
           onSave();
         })
@@ -30,7 +30,7 @@ const UserForm = ({ user, onSave }) => {
           console.error('There was an error updating the user!', error);
         });
     } else {
-      axios.post('http://192.168.1.3:8000/api/users/', userData)
+      axios.post('http://192.168.1.3/api/users/', userData)
         .then(response => {
           onSave();
         })

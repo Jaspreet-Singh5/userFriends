@@ -30,7 +30,7 @@ const UserList = ({ users, onEdit, onDelete }) => {
     const [friendsInfo, setFriendsInfo] = useState([]);
 
     const handleViewFriends = async (userId) => {
-        const response = await fetch(`http://192.168.1.3:8000/api/users/${userId}/friends/`);
+        const response = await fetch(`http://192.168.1.3/api/users/${userId}/friends/`);
         const friends = await response.json();
         // Map the friend IDs to user objects
         const friendsDetails = friends.map(friend => users.find(user => user.id === friend.friend)).filter(Boolean);
