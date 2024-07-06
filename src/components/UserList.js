@@ -19,6 +19,10 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   
   const StyledListItem = styled(ListItem)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
+
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
   }));
   
   const StyledAvatar = styled(Avatar)(({ theme }) => ({
@@ -49,7 +53,7 @@ const UserList = ({ users, onEdit, onDelete }) => {
           </Typography>
           <List>
             {users.map(user => (
-              <ListItem
+              <StyledListItem
                 key={user.id}
                 secondaryAction={
                   <>
@@ -74,7 +78,7 @@ const UserList = ({ users, onEdit, onDelete }) => {
                 <ListItemText primary={user.username} secondary={user.email} />
 
                 
-              </ListItem>
+              </StyledListItem>
             ))}
           </List>
 
