@@ -40,6 +40,11 @@ const UserForm = ({ user, onSave }) => {
     }
   };
 
+  const handleReset = () => {
+    setUsername('');
+    setEmail('');
+  };
+
   return (
     <Container maxWidth="sm">
       <Box
@@ -84,6 +89,14 @@ const UserForm = ({ user, onSave }) => {
             sx={{ mt: 3, mb: 2 }}
           >
             Save
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 1, mb: 2 }}
+            onClick={handleReset}
+          >
+            Reset
           </Button>
         </Box>
       </Box>
