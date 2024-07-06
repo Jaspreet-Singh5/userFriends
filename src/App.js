@@ -14,7 +14,7 @@ const App = () => {
   }, []);
 
   const fetchUsers = () => {
-    axios.get('http://192.168.1.3:8000/api/users/')
+    axios.get('http://192.168.1.3/api/users/')
       .then(response => {
         setUsers(response.data);
       })
@@ -28,7 +28,7 @@ const App = () => {
   };
 
   const handleDelete = (userId) => {
-    axios.delete(`http://192.168.1.3:8000/api/users/${userId}/`)
+    axios.delete(`http://192.168.1.3/api/users/${userId}/`)
       .then(response => {
         fetchUsers();
       })
