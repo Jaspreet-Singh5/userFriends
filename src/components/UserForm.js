@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-import { Box, TextField, Button, Typography, Container } from '@mui/material';
+import { Box, TextField, Button, Typography, Container, Snackbar, Alert } from '@mui/material';
 
 const UserForm = ({ user, onSave }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -28,6 +29,8 @@ const UserForm = ({ user, onSave }) => {
         })
         .catch(error => {
           console.error('There was an error updating the user!', error);
+          setSnackbarMessage('Error updating user');
+          setSnackbarOpen(true);
         });
     } else {
       axios.post('http://192.168.1.3/api/users/', userData)
@@ -36,6 +39,8 @@ const UserForm = ({ user, onSave }) => {
         })
         .catch(error => {
           console.error('There was an error creating the user!', error);
+          setSnackbarMessage('Error creating user');
+          setSnackbarOpen(true);
         });
     }
   };
@@ -43,6 +48,13 @@ const UserForm = ({ user, onSave }) => {
   const handleReset = () => {
     setUsername('');
     setEmail('');
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return (
@@ -100,6 +112,11 @@ const UserForm = ({ user, onSave }) => {
           </Button>
         </Box>
       </Box>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

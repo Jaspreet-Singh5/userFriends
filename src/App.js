@@ -9,23 +9,27 @@ const App = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [loading, setLoading] = useState(false); // New loading state
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // New state for snackbar severity
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     axios.get('http://192.168.1.3/api/users/')
       .then(response => {
         setUsers(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the users!', error);
+        setSnackbarMessage('Failed to fetch users');
+        setSnackbarSeverity('error'); // Set severity to error
+        setSnackbarOpen(true);
       })
       .finally(() => {
-        setLoading(false); // Stop loading
+        setLoading(false);
       });
   };
 
@@ -34,29 +38,34 @@ const App = () => {
   };
 
   const handleDelete = (userId) => {
-    setLoading(true); // Start loading
+    setLoading(true);
     axios.delete(`http://192.168.1.3/api/users/${userId}/`)
       .then(response => {
         fetchUsers();
         setSnackbarMessage('User deleted successfully');
+        setSnackbarSeverity('success'); // Set severity to success
         setSnackbarOpen(true);
       })
       .catch(error => {
         console.error('There was an error deleting the user!', error);
+        setSnackbarMessage('Failed to delete user');
+        setSnackbarSeverity('error'); // Set severity to error
+        setSnackbarOpen(true);
       })
       .finally(() => {
-        setLoading(false); // Stop loading
+        setLoading(false);
       });
   };
 
   const handleSave = (user) => {
-    setLoading(true); // Start loading
+    setLoading(true);
     
     setEditingUser(null);
     fetchUsers();
     setSnackbarMessage('User saved successfully');
+    setSnackbarSeverity('success'); // Set severity to success
     setSnackbarOpen(true);
-    setLoading(false); // Stop loading
+    setLoading(false);
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -86,7 +95,7 @@ const App = () => {
         </>
       )}
       <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
