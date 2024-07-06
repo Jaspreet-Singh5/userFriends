@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import UserList from './components/UserList';
 import UserForm from './components/UserForm';
 import axios from 'axios';
-
-import { Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box, Snackbar, Alert } from '@mui/material';
 
 const App = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -31,6 +32,9 @@ const App = () => {
     axios.delete(`http://192.168.1.3/api/users/${userId}/`)
       .then(response => {
         fetchUsers();
+        // Show success message
+        setSnackbarMessage('User deleted successfully');
+        setSnackbarOpen(true);
       })
       .catch(error => {
         console.error('There was an error deleting the user!', error);
@@ -40,6 +44,17 @@ const App = () => {
   const handleSave = () => {
     setEditingUser(null);
     fetchUsers();
+
+    // Show success message
+    setSnackbarMessage('User saved successfully');
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return (
@@ -53,6 +68,11 @@ const App = () => {
       <Box>
         <UserList users={users} onEdit={handleEdit} onDelete={handleDelete} />
       </Box>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
