@@ -4,6 +4,12 @@ import UserForm from './components/UserForm';
 import axios from 'axios';
 import { Container, Typography, Box, Snackbar, Alert, CircularProgress } from '@mui/material';
 
+/**
+ * Main App component for user management.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
 const App = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
@@ -12,10 +18,14 @@ const App = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // New state for snackbar severity
   const [loading, setLoading] = useState(false);
 
+  // Fetch users when component mounts
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  /**
+   * Fetch users from the API.
+   */
   const fetchUsers = () => {
     setLoading(true);
     axios.get('http://localhost/api/users/')
@@ -33,10 +43,20 @@ const App = () => {
       });
   };
 
+  /**
+   * Handle edit user action.
+   * 
+   * @param {Object} user - The user to edit.
+   */
   const handleEdit = (user) => {
     setEditingUser(user);
   };
 
+  /**
+   * Handle delete user action.
+   * 
+   * @param {number} userId - The ID of the user to delete.
+   */
   const handleDelete = (userId) => {
     setLoading(true);
     axios.delete(`http://localhost/api/users/${userId}/`)
@@ -57,6 +77,11 @@ const App = () => {
       });
   };
 
+  /**
+   * Handle save user action.
+   * 
+   * @param {Object} user - The user to save.
+   */
   const handleSave = (user) => {
     setLoading(true);
     
@@ -68,6 +93,12 @@ const App = () => {
     setLoading(false);
   };
 
+  /**
+   * Handle close snackbar action.
+   * 
+   * @param {Event} event - The event object.
+   * @param {string} reason - The reason for closing.
+   */
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
       return;

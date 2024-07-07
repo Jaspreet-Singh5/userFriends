@@ -2,12 +2,23 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, TextField, Button, Typography, Container, Snackbar, Alert } from '@mui/material';
 
+/**
+ * UserForm Component
+ *
+ * This component renders a form to add or edit a user.
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} [props.user] - User object containing existing user data (optional)
+ * @param {Function} props.onSave - Callback function to be called after successfully saving the user data
+ */
 const UserForm = ({ user, onSave }) => {
+  // State variables for form inputs
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
+  // Effect to set form fields when the user prop changes
   useEffect(() => {
     if (user) {
       setUsername(user.username);
@@ -18,11 +29,17 @@ const UserForm = ({ user, onSave }) => {
     }
   }, [user]);
 
+  /**
+   * Handle form submission
+   *
+   * @param {Event} event - Form submit event
+   */
   const handleSubmit = (event) => {
     event.preventDefault();
     const userData = { username, email };
 
     if (user) {
+      // Update existing user
       axios.put(`http://localhost/api/users/${user.id}/`, userData)
         .then(response => {
           onSave();
@@ -33,6 +50,7 @@ const UserForm = ({ user, onSave }) => {
           setSnackbarOpen(true);
         });
     } else {
+      // Create new user
       axios.post('http://localhost/api/users/', userData)
         .then(response => {
           onSave();
@@ -45,11 +63,13 @@ const UserForm = ({ user, onSave }) => {
     }
   };
 
+  // Handle reset button click
   const handleReset = () => {
     setUsername('');
     setEmail('');
   };
 
+  // Handle snackbar close event
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
       return;
